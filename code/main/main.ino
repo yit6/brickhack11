@@ -2,8 +2,8 @@
 
 int i = 0;
 
-const char *ssid = "esp32test";
-const char *password = "1234";
+#define WIFI_SSID "strandbeest_ap"
+#define WIFI_PSK  "12345678"
 
 WiFiServer server(80);
 
@@ -14,9 +14,9 @@ void setup() {
   Serial.begin(9600);
 
   Serial.print("Setting up AP: ");
-  Serial.println(ssid);
+  Serial.println(WIFI_SSID);
   
-  WiFi.softAP(ssid, password);
+  WiFi.softAP(WIFI_SSID, WIFI_PSK);
 
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
