@@ -1,18 +1,18 @@
 #include <WiFi.h>
 
+#define LEAD
+
 int i = 0;
 
 #define WIFI_SSID "strandbeest_ap"
 #define WIFI_PSK  "12345678"
 
+#ifdef LEAD
 WiFiServer server(80);
+#else
+#endif
 
-void setup() {
-
-  pinMode(2, OUTPUT);
-  
-  Serial.begin(9600);
-
+void setupAP() {
   Serial.print("Setting up AP: ");
   Serial.println(WIFI_SSID);
   
@@ -21,8 +21,19 @@ void setup() {
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(IP);
+}
 
+void setup() {
+
+  pinMode(2, OUTPUT);
+  
+  Serial.begin(9600);
+
+#ifdef LEAD
+  setupAP();
   server.begin();
+#endif
+
 }
 
 void loop() {
