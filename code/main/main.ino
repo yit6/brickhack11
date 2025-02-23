@@ -16,7 +16,7 @@ int i = 0;
 #ifdef LEAD
 WebServer server(80);
 #else
-HTTPClient http;
+//HTTPClient http;
 #endif
 
 unsigned long next;
@@ -76,13 +76,14 @@ void loop() {
 #ifdef LEAD
   server.handleClient();
 #else
-  http.begin("192.168.4.1");
+  HTTPClient http;
+  http.begin("http://192.168.4.1/");
   int code = http.GET();
 
   if (code == HTTP_CODE_OK) {
     Serial.println(http.getString());
   } else {
-    Serial.println(":(");
+    Serial.printf(":( code was %d\n", code);
   }
 #endif
 
