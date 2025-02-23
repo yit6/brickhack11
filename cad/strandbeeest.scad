@@ -67,6 +67,13 @@ module dshaft(d, height, meas) {
 	}
 }
 
+module cap(thickness, major_radius, minor_radius) {
+	difference() {
+		cylinder(r=major_radius,h=thickness);
+		cylinder(r1=minor_radius,r2=major_radius/3+2*minor_radius/3,h=thickness);
+	}
+}
+
 // Leg triangles
 translate([50,0,0]) triangle(55.8,41.5,40.1, post_height=7,label=false);
 translate([50,50,0]) triangle(36.7, 65.7, 49.0, post_height=7,label=false);
@@ -79,7 +86,7 @@ translate([0,30,0]) link(length=61.9,hole=true,label=false);
 
 // Crank
 translate([0,-10,0]) difference() {
-	link(length=15,post_height=5);
+	link(length=15,post_height=10);
 	dshaft(6,10,5.5);
 }
 
@@ -90,3 +97,5 @@ translate([0,-20,0]) union() {
 	link(38,hole=true);
 	cylinder(r=width/2,h=thickness);
 }
+
+//cap(thickness,post_radius+2-tol,post_radius-tol);
