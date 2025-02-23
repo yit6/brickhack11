@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <WebServer.h>
 
 #define LEAD
 
@@ -8,7 +9,7 @@ int i = 0;
 #define WIFI_PSK  "12345678"
 
 #ifdef LEAD
-WiFiServer server(80);
+WebServer server(80);
 #else
 #endif
 
@@ -17,6 +18,8 @@ void setupAP() {
   Serial.println(WIFI_SSID);
   
   WiFi.softAP(WIFI_SSID, WIFI_PSK);
+
+  delay(1000);
 
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
@@ -29,6 +32,8 @@ void setup() {
   
   Serial.begin(9600);
 
+  server.on("/", handle_OnConnect);
+
 #ifdef LEAD
   setupAP();
   server.begin();
@@ -37,18 +42,10 @@ void setup() {
 }
 
 void loop() {
-  WiFiClient client = server.available();
+  server.handleClient();
+}
 
-  if (client) {
-    Serial.println("New client");
-
-    while (client.connected()) {
-      if (client.available()) {
-        char c = client.read();
-        Serial.println(c);
-        client.println(c);
-        digitalWrite(2, i++%2?LOW:HIGH);
-      }
-    }
-  }
+void handle_OnConnect() {
+  Serial.println("connection");
+  server.send(200,"text/html","<h1>Hello!</h1>");
 }
