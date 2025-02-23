@@ -1,0 +1,47 @@
+R"=====(body {
+    background-color: #7CCF98;
+}
+
+.mainContainer {
+    position: absolute;
+    top: 2em;
+    bottom: 2em; 
+    left: 2em;
+    right: 2em;
+    border: 4px solid black;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.side {
+    background-color: rgb(242, 190, 190);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 3px solid black;
+    gap: 2em;
+}
+
+.arrowButton {
+    width: 1.4em;
+    height: 1.4em;
+    border: 4px solid black;
+    background-color: red;
+    font-size: 12em;
+    text-align: center;
+    vertical-align: center;
+    user-select: none;
+}
+
+.arrowButton:hover {
+    background-color: lightcoral;
+}
+
+.arrowButton:active {
+    background-color: rgb(237, 153, 153);
+})====="

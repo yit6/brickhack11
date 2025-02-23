@@ -2,6 +2,8 @@
 
 #include <WiFi.h>
 
+#define LEAD
+
 #ifdef LEAD
 #include <WebServer.h>
 #else
@@ -20,6 +22,18 @@ WebServer server(80);
 #endif
 
 unsigned long next;
+
+const char* html = 
+#include "index.html"
+;
+
+const char* css =
+#include "index.css"
+;
+
+const char* js =
+#include "index.js"
+;
 
 void setupAP() {
   Serial.print("Setting up AP: ");
@@ -61,6 +75,8 @@ void setup() {
   setupAP();
   server.begin();
   server.on("/", handle_OnConnect);
+  server.on("/index.css", handleCss);
+  server.on("/index.js", handleJs);
 #else
   setupStation();
 #endif
@@ -97,6 +113,46 @@ void loop() {
 void handle_OnConnect() {
   Serial.println("connection");
 #ifdef LEAD
-  Server.send(200,"text/html","<h1>Hello!</h1>");
+  server.send(200,"text/html",html);
 #endif
+}
+
+void handleCss() {
+ server.send(200,"text/css",css); 
+}
+
+void handleJs() {
+  server.send(200, "text/javascript",js);
+}
+
+void upRight() {
+
+}
+
+void downRight() {
+
+}
+
+void upLeft() {
+
+}
+
+void downLeft() {
+
+}
+
+void upRightN() {
+
+}
+
+void downRightN() {
+
+}
+
+void upLeftN() {
+
+}
+
+void downLeftN() {
+
 }
