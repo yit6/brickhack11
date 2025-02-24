@@ -1,6 +1,7 @@
 #define FOLLOW
 
 #include <WiFi.h>
+#include <Stepper.h>
 
 #define LEAD
 
@@ -20,6 +21,13 @@ WebServer server(80);
 #else
 //HTTPClient http;
 #endif
+
+#define STEPS_PER_REVOLUTION 2048
+
+Stepper left(STEPS_PER_REVOLUTION, 12, 27, 14, 26);
+Stepper right(STEPS_PER_REVOLUTION, 35, 32, 33, 25);
+
+int ur, dr, ul, dl = 0;
 
 unsigned long next;
 
@@ -77,17 +85,22 @@ void setup() {
   server.on("/", handle_OnConnect);
   server.on("/index.css", handleCss);
   server.on("/index.js", handleJs);
+  server.on("/upRight", upRight);
+  server.on("/downRight", downRight);
+  server.on("/upLeft", upLeft);
+  server.on("/downLeft", downLeft);
+  server.on("/upRightN", upRightN);
+  server.on("/downRightN", downRightN);
+  server.on("/upLeftN", upLeftN);
+  server.on("/downLeftN", downLeftN);
 #else
   setupStation();
 #endif
-
+  left.setSpeed(4);
+  right.setSpeed(2);
 }
 
 void loop() {
-  
-  next += 100;
-
-  Serial.println("Loop!");
   
 #ifdef LEAD
   server.handleClient();
@@ -103,11 +116,8 @@ void loop() {
   }
 #endif
 
-  while (millis() < next) {
-    delay(1);
-  }
-
-  next = millis();
+  left.step(ul - dl);
+  right.step(ur - dr);
 }
 
 void handle_OnConnect() {
@@ -126,33 +136,41 @@ void handleJs() {
 }
 
 void upRight() {
-
+  ur = 1;
+  server.send(200, "text/plain", "Up Right On");
 }
 
 void downRight() {
-
+  dr = 1;
+  server.send(200, "text/plain", "Down Right On");
 }
 
 void upLeft() {
-
+  ul = 1;
+  server.send(200, "text/plain", "Up Left On");
 }
 
 void downLeft() {
-
+  dl = 1;
+  server.send(200, "text/plain", "Down Left On");
 }
 
 void upRightN() {
-
+  ur = 0;
+  server.send(200, "text/plain", "Up Right Off");
 }
 
 void downRightN() {
-
+  dr = 0;
+  server.send(200, "text/plain", "Down Right Off");
 }
 
 void upLeftN() {
-
+  ul = 0;
+  server.send(200, "text/plain", "Up Left Off");
 }
 
 void downLeftN() {
-
+  dl = 0;
+  server.send(200, "text/plain", "Down Left Off");
 }
